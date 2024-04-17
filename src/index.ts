@@ -5,9 +5,9 @@ dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
+app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
-  console.log("GET");
   console.log(outputReq(req));
 
   const html = `
@@ -21,10 +21,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/", (req: Request, res: Response) => {
-  console.log("POST");
-  console.dir(req)
-  
-  ;
+  outputReq(req);
 
   res.writeHead(200, { "Content-Type": "application/json" });
   res.end(`{
@@ -37,5 +34,10 @@ app.listen(port, () => {
 });
 
 const outputReq = (req: Request) => {
-  console.dir(req.body);
+  console.log(`${req.method} - ${req.protocol}://${req.headers.host}`);
+  console.log('headers:');
+  console.log(req.headers);
+
+  console.log(`body: `)
+  console.log(req.body);
 };
